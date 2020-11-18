@@ -30,7 +30,7 @@ public class WebServer {
     System.out.println("(press ctrl-c to exit)");
     try {
       // create the main server socket
-      s = new ServerSocket(3000);
+      s = new ServerSocket(8888);
     } catch (Exception e) {
       System.out.println("Error: " + e);
       return;
