@@ -54,7 +54,7 @@ public class WebServer {
         String str = ".";
         while (!str.equals("")){
           str = in.readLine();
-
+        }
         // Send the response
         // Send the headers
         out.println("HTTP/1.0 200 OK");
@@ -64,7 +64,7 @@ public class WebServer {
         out.println("");
         // Send the HTML page
         out.println("<H1>Welcome to the Ultra Mini-WebServer</H2>");
-        out.flush();}
+        out.flush();
         remote.close();
       } catch (Exception e) {
         System.out.println("Error: " + e);
