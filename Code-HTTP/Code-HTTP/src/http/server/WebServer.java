@@ -2,11 +2,17 @@
 
 package http.server;
 
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Example program from Chapter 1 Programming Spiders, Bots and Aggregators in
@@ -22,6 +28,11 @@ public class WebServer {
 
   /**
    * WebServer constructor.
+   * @see WebServer#getClass()
+   * @see WebServer#
+   * @see WebServer#
+   * @see WebServer#
+   * @see WebServer#
    */
   protected void start() {
     ServerSocket s;
@@ -51,10 +62,73 @@ public class WebServer {
         // stop reading once a blank line is hit. This
         // blank line signals the end of the client HTTP
         // headers.
+        String uri = "";
+        String command = "";
+        String postData = "";
+        byte[] byteData = null;
+        Map<String, String> map = new HashMap<String,String>();
         String str = ".";
-        while (!str.equals("")){
+        str = in.readLine();
+        if(str != null && !str.equals("")) {
+          System.out.println(str);
+          String[] request = str.split(" ");
+          command = request[0];
+          uri = request[1];
+          String[] lines = null;
           str = in.readLine();
+          System.out.println(str);
+
+          while (str != null && !str.equals("")) {
+            lines = str.split(": ");
+            map.put(lines[0], lines[1]); // enregistrer tous les headers
+            str = in.readLine();
+            System.out.println(str);
+          }
+
+          if(map.containsKey("Content-Length")) {
+            int cL = Integer.valueOf(map.get("Content-Length"));
+            char[]  buffer      = new char[cL];
+
+            in.read(buffer, 0, cL);
+
+            postData = new String(buffer, 0, buffer.length);
+            System.out.println(postData);
+
+            Charset cs = Charset.forName("UTF-8");
+            CharBuffer cb = CharBuffer.allocate(buffer.length);
+            cb.put(buffer);
+            cb.flip();
+            ByteBuffer bb = cs.encode(cb);
+            byteData = bb.array();
+          }
         }
+
+
+        switch(command) {
+          case "GET":
+            get(remote, out, uri);
+            break;
+          case "HEAD":
+            head(out, uri);
+            break;
+          case "PUT":
+            put(remote, out, uri, byteData);
+            break;
+          case "POST":
+            post(out, uri, map, byteData);
+            break;
+          case "DELETE":
+            delete(out,uri);
+            break;
+          default:
+            try {
+              requestHandler(out,501);
+            } catch (Exception e) {
+              System.out.println(e);
+            }
+        }
+
+
         // Send the response
         // Send the headers
         out.println("HTTP/1.0 200 OK");
