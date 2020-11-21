@@ -3,9 +3,7 @@
 package http.server;
 
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.ByteBuffer;
@@ -237,6 +235,34 @@ public class WebServer {
     }
     out.flush();
   }
+
+  private void get(Socket remote, PrintWriter out, String uri) throws IOException {
+    String path = ClassLoader.getSystemResource("").toString().substring(6);
+    path = path.substring(0, path.length()-1) + (uri.indexOf("?")==-1 ? uri : uri.substring(0, uri.indexOf("?")));
+    File file = new File(path);
+    System.out.println(path); //Les fichiers se trouvent sous /bin
+
+    if(!uri.contains("?")) {
+      if (uri.equals("/")) {
+        requestHandler(out,200,"text/html");
+        out.println("<link rel=\"icon\" href=\"data:;base64,=\">"); //ignorer favicon.ico
+        // Send the HTML page
+        out.println("<H1>Welcome to the Ultra Mini-WebServer</H1>");
+        out.flush();
+
+      } else {
+        String type = getContentType(file);
+        System.out.println(type);
+
+      }
+    }
+
+  }
+
+  private void getContentType(File file) {
+  }
+
+
   /**
    * Start the application.
    * 
