@@ -106,18 +106,18 @@ public class WebServer {
           case "GET":
             get(remote, out, uri);
             break;
-          case "HEAD":
-            head(out, uri);
-            break;
-          case "PUT":
-            put(remote, out, uri, byteData);
-            break;
-          case "POST":
-            post(out, uri, map, byteData);
-            break;
-          case "DELETE":
-            delete(out,uri);
-            break;
+//          case "HEAD":
+//            head(out, uri);
+//            break;
+//          case "PUT":
+//            put(remote, out, uri, byteData);
+//            break;
+//          case "POST":
+//            post(out, uri, map, byteData);
+//            break;
+//          case "DELETE":
+//            delete(out,uri);
+//            break;
           default:
             try {
               requestHandler(out,501);
@@ -259,7 +259,8 @@ public class WebServer {
 
   }
 
-  private void getContentType(File file) {
+  private String getContentType(File file) {
+    return null;
   }
 
 
