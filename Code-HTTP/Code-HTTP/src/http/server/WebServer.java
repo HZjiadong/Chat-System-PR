@@ -146,6 +146,46 @@ public class WebServer {
     }
   }
 
+  private void requestHandler(PrintWriter out, int stat, String contentType) {
+    switch(String.valueOf(stat)) {
+      case "100":
+        out.println("HTTP/1.1 " + String.valueOf(stat) + " Continue");
+        out.println("Content-Type: " + contentType);
+        out.println("Server: Bot");
+        out.println("");
+        break;
+      case "200":
+        out.println("HTTP/1.1 " + String.valueOf(stat) + " OK");
+        out.println("Content-Type: " + contentType);
+        out.println("Server: Bot");
+        out.println("");
+        break;
+      case "403":
+        out.println("HTTP/1.1 " + String.valueOf(stat) + " Forbidden");
+        out.println("Content-Type: " + contentType);
+        out.println("Server: Bot");
+        out.println("");
+        out.println("<html>");
+        out.println("<head><title>403 Forbidden</title></head>");
+        out.println("<body><h1>403 Forbidden</h1>");
+        out.println("<p>Access is forbidden to the requested page.</p></body>");
+        out.println("</html>");
+        break;
+      case "404":
+        out.println("HTTP/1.1 " + String.valueOf(stat) + " Not Found");
+        out.println("Content-Type: " + contentType);
+        out.println("Server: Bot");
+        out.println("");
+        out.println("<html>");
+        out.println("<head><title>404 Not Found</title></head>");
+        out.println("<body><h1>404 Not Found</h1>");
+        out.println("<p>The requested URL was not found on this server.</p></body>");
+        out.println("</html>");
+        break;
+    }
+    out.flush();
+  }
+
   /**
    * Start the application.
    * 
