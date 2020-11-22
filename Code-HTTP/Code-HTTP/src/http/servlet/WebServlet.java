@@ -27,4 +27,8 @@ public class WebServlet extends HttpServlet {
             out.println(someId);
         }
     }
+
+    public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
+        doGet(req, res);
+    }
 }
