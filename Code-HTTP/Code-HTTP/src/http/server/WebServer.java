@@ -106,6 +106,9 @@ public class WebServer {
           case "GET":
             get(remote, out, uri);
             break;
+          case "HEAD":
+
+
 //          case "HEAD":
 //            head(out, uri);
 //            break;
@@ -259,8 +262,34 @@ public class WebServer {
 
   }
 
-  private String getContentType(File file) {
-    return null;
+  public String getContentType(File file) {
+
+    String fileName = file.getName();
+    String type = ".txt";
+
+    if (fileName.endsWith(".html") || fileName.endsWith(".htm") || fileName.endsWith(".txt")) {
+      type = "text/html";
+    } else if (fileName.endsWith(".mp4")) {
+      type = "video/mp4";
+    } else if (fileName.endsWith(".png")) {
+      type = "image/png";
+    } else if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg")) {
+      type = "image/jpg";
+    } else if (fileName.endsWith(".mp3")) {
+      type = "audio/mp3";
+    } else if (fileName.endsWith(".avi")) {
+      type = "video/x-msvideo";
+    } else if (fileName.endsWith(".css")) {
+      type = "text/css";
+    } else if (fileName.endsWith(".pdf")) {
+      type = "application/pdf";
+    } else if (fileName.endsWith(".odt")) {
+      type = "application/vnd.oasis.opendocument.text";
+    } else if (fileName.endsWith(".json")) {
+      type = "application/json";
+    }
+
+    return type;
   }
 
 
