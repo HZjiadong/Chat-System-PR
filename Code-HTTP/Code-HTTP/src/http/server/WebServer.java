@@ -4,6 +4,8 @@ package http.server;
 
 
 import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.ByteBuffer;
@@ -260,6 +262,16 @@ public class WebServer {
       }
     }
 
+  }
+
+  public void doGet(HttpServletRequest req,HttpServletResponse res) throws IOException {
+    res.setContentType("text/html");
+    PrintWriter out = res.getWriter();
+    out.println("<HTML>");
+    out.println("<HEAD><TITLE> What For </TITLE></HEAD>");
+    out.println("<BODY><BIG> What For </BODY></BIG>");
+    out.println("</HTML>");
+    out.close();
   }
 
   public String getContentType(File file) {
