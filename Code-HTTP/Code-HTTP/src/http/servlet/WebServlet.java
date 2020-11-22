@@ -31,4 +31,32 @@ public class WebServlet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
         doGet(req, res);
     }
+    
+    public void doAuth(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
+
+        String name = req.getRemoteUser();
+        PrintWriter out = res.getWriter();
+        if (name == null){
+            out.println("The Server Administrator should protect this resource");
+        } else {
+            String [] items = req.getParameterValues("item");
+            if (items != null) {
+                for (int i =0; i < items.length; i++) {
+                    addItemToCart(name, items[i]);
+                }
+            }
+        }
+        if (name == null){
+            out.println("The Server Administrator should protect this page");
+        } else {
+            String[] items = getItemsFromCart(name);
+        }
+    }
+
+    private String[] getItemsFromCart(String name) {
+        return new String[0];
+    }
+
+    private void addItemToCart(String name, String item) {
+    }
 }
