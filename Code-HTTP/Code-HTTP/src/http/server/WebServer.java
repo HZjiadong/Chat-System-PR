@@ -265,6 +265,7 @@ public class WebServer {
   }
 
   public void doGet(HttpServletRequest req,HttpServletResponse res) throws IOException {
+
     res.setContentType("text/html");
     PrintWriter out = res.getWriter();
     out.println("<HTML>");
@@ -272,6 +273,11 @@ public class WebServer {
     out.println("<BODY><BIG> What For </BODY></BIG>");
     out.println("</HTML>");
     out.close();
+
+    String someId = req.getParameter("someId");
+    if (someId != null){
+      out.println(someId);
+    }
   }
 
   public String getContentType(File file) {
