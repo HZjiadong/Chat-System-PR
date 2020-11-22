@@ -32,7 +32,7 @@ public class WebServlet extends HttpServlet {
         doGet(req, res);
     }
     
-    public void doAuth(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
+    public void AuthentificationBasedOnUserName(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
 
         String name = req.getRemoteUser();
         PrintWriter out = res.getWriter();
