@@ -5,6 +5,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 
 
+
 public class WebServlet extends HttpServlet {
 
     /**
@@ -58,5 +59,19 @@ public class WebServlet extends HttpServlet {
     }
 
     private void addItemToCart(String name, String item) {
+    }
+
+
+    public void AuthentificationBasedOnCookies(HttpServletRequest req, HttpServletResponse res) throws ServletException,IOException{
+        Cookie cookie = new Cookie("ID","999");
+        res.addCookie(cookie);
+
+        Cookie[] cookies = req.getCookies();
+        if(cookies != null){
+            for(int i = 0; i<cookies.length; i++){
+                String name = cookies[i].getName();
+                String value = cookies[i].getValue();
+            }
+        }
     }
 }
