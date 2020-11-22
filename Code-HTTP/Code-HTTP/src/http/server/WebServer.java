@@ -264,7 +264,7 @@ public class WebServer {
 
   }
 
-  
+
 
   public String getContentType(File file) {
 
