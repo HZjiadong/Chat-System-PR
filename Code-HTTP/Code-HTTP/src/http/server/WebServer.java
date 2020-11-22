@@ -264,10 +264,16 @@ public class WebServer {
 
   }
 
-  public void doGet(HttpServletRequest req,HttpServletResponse res) throws IOException {
+
+  /**
+  * A simple HTTP Servlet handling a form*/
+  public void doGet(HttpServletRequest req,HttpServletResponse res) throws ServletException,IOException {
 
     res.setContentType("text/html");
     PrintWriter out = res.getWriter();
+
+    String name = req.getParameter("name");
+    
     out.println("<HTML>");
     out.println("<HEAD><TITLE> What For </TITLE></HEAD>");
     out.println("<BODY><BIG> What For </BODY></BIG>");
