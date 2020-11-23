@@ -27,6 +27,12 @@ public class WebServlet extends HttpServlet {
         if (someId != null){
             out.println(someId);
         }
+
+        String accountIdStr = req.getParameter("accoundIdStr");
+        int accoundId = Integer.parseInt(accountIdStr);
+        if (accoundId != 0){
+            out.println("Id can't be zero!");
+        }
     }
 
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
