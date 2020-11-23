@@ -75,7 +75,7 @@ public class WebServlet extends HttpServlet {
         }
 
         res.setContentType("text/html");
-        
+
         out.println("<HTML>");
         out.println("<HEAD> <TITLE> Account " + accountId + "</TITLE></HEAD>");
         out.println("<BODY>");
