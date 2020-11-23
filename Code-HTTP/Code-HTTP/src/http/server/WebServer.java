@@ -26,7 +26,9 @@ import java.util.Map;
  */
 public class WebServer {
 
-  /**
+    private Object Syetem;
+
+    /**
    * WebServer constructor.
    * @see WebServer#getClass()
    * @see WebServer#
@@ -104,7 +106,35 @@ public class WebServer {
           }
         }
 
-        
+        switch(command){
+
+            case "GET":
+                get( remote, out, uri);
+                break;
+
+            case "HEAD":
+                head( out, uri);
+                break;
+
+            case "PUT":
+                put( remote, out, uri, byteData);
+                break;
+
+            case "POST":
+                post( out, uri, map, byteData);
+                break;
+
+            case "DELETE":
+                delete( out, uri);
+                break;
+
+            default:
+                try{
+                    requestHandler( out, 501);
+                } catch (Exception e){
+                    System.out.println(e);
+            }
+        }
 
         // Send the response
         // Send the headers
@@ -123,7 +153,19 @@ public class WebServer {
     }
   }
 
-  private void requestHandler(PrintWriter out, int stat, String contentType) {
+    private void delete(PrintWriter out, String uri) {
+    }
+
+    private void post(PrintWriter out, String uri, Map<String, String> map, byte[] byteData) {
+    }
+
+    private void put(Socket remote, PrintWriter out, String uri, byte[] byteData) {
+    }
+
+    private void head(PrintWriter out, String uri) {
+    }
+
+    private void requestHandler(PrintWriter out, int stat, String contentType) {
     switch(String.valueOf(stat)) {
       case "100":
         out.println("HTTP/1.1 " + String.valueOf(stat) + " Continue");
