@@ -3,7 +3,10 @@
 package http.server;
 
 
+import java.awt.image.BufferedImage;
 import java.io.*;
+import javax.imageio.IIOException;
+import javax.imageio.ImageIO;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.net.ServerSocket;
@@ -168,7 +171,113 @@ public class WebServer {
                   out.println("<link rel=\"icon\" href=\"data:;base64,=\">");
                   out.println("<H1>Welcome to our WebServer</H1>");
                   out.flush();
+              }
+              else{
+                  //other type of normal file sources in discussion with html form
+                  String type = getContentType(file);
+                  System.out.println(type);
 
+                  if(file.isFile() && file.exists() && !file.canRead()){
+                      requestHandler(out,403,getContentType(file));
+                  }
+                  else{
+                      //text file source, need to be further discussion
+                      if(file.isFile() && file.exists()){
+                          //test/html files in consideration
+                          if(type.equals("text/html")){
+                              requestHandler(out,200,"text/html");
+                              out.println("<link rel=\"icon\" href=\"data:;base64,=\">");
+                              String encoding="GBK";
+                              InputStreamReader read = new InputStreamReader(new FileInputStream(file),encoding);
+                              BufferedReader bufferedReader = new BufferedReader(read);
+                              String lineTxt = null;
+                              while((lineTxt = bufferedReader.readLine()) != null){
+                                  out.println(lineTxt);
+                              }
+                              read.close();
+                              out.flush();
+                          }//images sources with certains form
+                          // png images
+                          else if(type.equals("image/png")){
+                              try {
+                                  //read images form source documents
+                                  BufferedImage image = ImageIO.read(new File(path));
+                                  requestHandler(out,200,"image/png");
+                                  out.flush();
+                                  ByteArrayOutputStream pngForms = new ByteArrayOutputStream();
+                                  ImageIO.write(image,"png", pngForms);
+                                  pngForms.flush();
+                                  byte[] imageByte = pngForms.toByteArray();
+                                  pngForms.close();
+                                  remote.getOutputStream().write(imageByte);
+                              } catch (IIOException e) {
+                                  requestHandler(out,404,"image/png");
+                              } catch (Exception e) {
+                                  e.printStackTrace();
+                              }
+                          }
+                          //jpg images
+                          else if(type.equals("image/jpg")){
+                              try {
+                                  //read images form source documents
+                                  BufferedImage image = ImageIO.read(new File(path));
+                                  requestHandler(out,200,"image/jpg");
+                                  out.flush();
+                                  ByteArrayOutputStream jpgForms = new ByteArrayOutputStream();
+                                  ImageIO.write(image,"jpg", jpgForms);
+                                  jpgForms.flush();
+                                  byte[] imageByte = jpgForms.toByteArray();
+                                  jpgForms.close();
+                                  remote.getOutputStream().write(imageByte);
+                              } catch (IIOException e) {
+                                  requestHandler(out,404,"image/jpg");
+                              } catch (Exception e) {
+                                  e.printStackTrace();
+                              }
+                          }
+                          //svg images
+                          else if(type.equals("image/svg")){
+                              try {
+                                  //read images form source documents
+                                  BufferedImage image = ImageIO.read(new File(path));
+                                  requestHandler(out,200,"image/svg");
+                                  out.flush();
+                                  ByteArrayOutputStream svgForms = new ByteArrayOutputStream();
+                                  ImageIO.write(image,"svg", svgForms);
+                                  svgForms.flush();
+                                  byte[] imageByte = svgForms.toByteArray();
+                                  svgForms.close();
+                                  remote.getOutputStream().write(imageByte);
+                              } catch (IIOException e) {
+                                  requestHandler(out,404,"image/svg");
+                              } catch (Exception e) {
+                                  e.printStackTrace();
+                              }
+                          }
+                          //not in any types above, with purely byteflow I/O
+                          else {
+                              BufferedInputStream inFlow = new BufferedInputStream(new FileInputStream(file));
+                              BufferedOutputStream outFlow = new BufferedOutputStream(remote.getOutputStream());
+                              requestHandler(out,200,type);
+
+                              byte[] buffer = new byte[1024];
+
+                              int nbRead;
+                              while((nbRead = inFlow.read(buffer)) != -1) {
+                                  outFlow.write(buffer, 0, nbRead);
+                              }
+                              inFlow.close();
+                              outFlow.flush();
+                          }
+                      }
+                      //message error
+                      else if(file.isFile()) {
+                          requestHandler(out,403,type);
+                      }
+                      else {
+                          requestHandler(out,404,type);
+                      }
+                  }
               }
 
           }//GET with parameters
@@ -191,6 +300,10 @@ public class WebServer {
 
               out.println(result);
               out.flush();
+          }
+          //message error
+          else{
+              requestHandler( out, 404, "text/html");
           }
       } catch (IOException e) {
           e.printStackTrace();
