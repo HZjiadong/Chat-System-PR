@@ -153,6 +153,9 @@ public class WebServer {
     }
   }
 
+    private void get(Socket remote, PrintWriter out, String uri) {
+    }
+ 
     private void delete(PrintWriter out, String uri) {
     }
 
@@ -164,6 +167,8 @@ public class WebServer {
 
     private void head(PrintWriter out, String uri) {
     }
+
+
 
     private void requestHandler(PrintWriter out, int stat, String contentType) {
     switch(String.valueOf(stat)) {
@@ -257,28 +262,8 @@ public class WebServer {
     out.flush();
   }
 
-  private void get(Socket remote, PrintWriter out, String uri) throws IOException {
-    String path = ClassLoader.getSystemResource("").toString().substring(6);
-    path = path.substring(0, path.length()-1) + (uri.indexOf("?")==-1 ? uri : uri.substring(0, uri.indexOf("?")));
-    File file = new File(path);
-    System.out.println(path); //Les fichiers se trouvent sous /bin
 
-    if(!uri.contains("?")) {
-      if (uri.equals("/")) {
-        requestHandler(out,200,"text/html");
-        out.println("<link rel=\"icon\" href=\"data:;base64,=\">"); //ignorer favicon.ico
-        // Send the HTML page
-        out.println("<H1>Welcome to the Ultra Mini-WebServer</H1>");
-        out.flush();
 
-      } else {
-        String type = getContentType(file);
-        System.out.println(type);
-
-      }
-    }
-
-  }
 
 
 
