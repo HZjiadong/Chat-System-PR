@@ -158,7 +158,32 @@ public class WebServer {
           String path = ClassLoader.getSystemResource("").toString().substring(6);
           path = path.substring(0, path.length()-1) + (uri.indexOf("?")==-1 ? uri : uri.substring(0, uri.indexOf("?")));
           File file = new File(path);
-          System.out.println(path); //Les fichiers se trouvent sous /bin
+          System.out.println(path); //basic files in catalogue "/bin"
+
+          //uri contains "?"
+          if(!uri.contains("?")){
+
+          }//GET with parameters
+          else if(uri.contains("Adder.html?") && !uri.endsWith("?") && file.exists() && file.isFile()){
+              requestHandler(out,200,"text/html");
+              out.println("<link rel=\"icon\" href=\"data:;base64,=\">");
+              Map<String, String> map = new HashMap<String,String>();
+              String lineParameter = null;
+              String[] parameters = null;
+              lineParameter = uri.substring(uri.indexOf("?")+1);
+              parameters = lineParameter.split("&");
+              for(String s : parameters)
+                  map.put(s.split("=")[0], s.split("=")[1]);
+              int result = 0;
+              for(String key:map.keySet()){
+                  if((key.equals("first")||key.equals("second")) && !map.get(key).isEmpty()) {
+                      result += Integer.parseInt(map.get(key));
+                  }
+              }
+
+              out.println(result);
+              out.flush();
+          }
       } catch (IOException e) {
           e.printStackTrace();
       }
