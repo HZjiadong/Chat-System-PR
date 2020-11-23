@@ -154,8 +154,16 @@ public class WebServer {
   }
 
     private void get(Socket remote, PrintWriter out, String uri) {
+      try{
+          String path = ClassLoader.getSystemResource("").toString().substring(6);
+          path = path.substring(0, path.length()-1) + (uri.indexOf("?")==-1 ? uri : uri.substring(0, uri.indexOf("?")));
+          File file = new File(path);
+          System.out.println(path); //Les fichiers se trouvent sous /bin
+      } catch (IOException e) {
+          e.printStackTrace();
+      }
     }
- 
+
     private void delete(PrintWriter out, String uri) {
     }
 
