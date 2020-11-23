@@ -62,6 +62,7 @@ public class WebServer {
         // stop reading once a blank line is hit. This
         // blank line signals the end of the client HTTP
         // headers.
+
         String uri = "";
         String command = "";
         String postData = "";
@@ -86,20 +87,20 @@ public class WebServer {
           }
 
           if(map.containsKey("Content-Length")) {
-            int cL = Integer.valueOf(map.get("Content-Length"));
-            char[]  buffer      = new char[cL];
+            int conLen = Integer.valueOf(map.get("Content-Length"));
+            char[]  buffer      = new char[conLen];
 
-            in.read(buffer, 0, cL);
+            in.read(buffer, 0, conLen);
 
             postData = new String(buffer, 0, buffer.length);
             System.out.println(postData);
 
-            Charset cs = Charset.forName("UTF-8");
-            CharBuffer cb = CharBuffer.allocate(buffer.length);
-            cb.put(buffer);
-            cb.flip();
-            ByteBuffer bb = cs.encode(cb);
-            byteData = bb.array();
+            Charset charset = Charset.forName("UTF-8");
+            CharBuffer charbuffer = CharBuffer.allocate(buffer.length);
+            charbuffer.put(buffer);
+            charbuffer.flip();
+            ByteBuffer bytebuffer = charset.encode(charbuffer);
+            byteData = bytebuffer.array();
           }
         }
 
