@@ -1,6 +1,7 @@
 package http.servlet;
 
 import java.io.*;
+import java.sql.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
@@ -28,10 +29,49 @@ public class WebServlet extends HttpServlet {
             out.println(someId);
         }
 
+        //Use "request" to read incoming HTTP header and HTML from data
+        //data that user entered and submitted
         String accountIdStr = req.getParameter("accoundIdStr");
         int accoundId = Integer.parseInt(accountIdStr);
         if (accoundId != 0){
             out.println("Id can't be zero!");
+        }
+
+        /**
+         * @param url
+         * @param user
+         * @param password
+         * */
+        //Perform any internal processing for generating dynamic results
+        float balance = 0;
+        String url = new String();
+        String user= new String();
+        String password= new String();
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(url, user, password);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        ResultSet rs = null;
+        try {
+            rs = stmt.executeQuery("Select balance FROM accounts WHERE id=" + accoundId);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        try{
+            if (rs.next())
+                balance = rs.getFloat("balance");
+            rs.close();
+            stmt.close();
+        } catch (Exception e){
+            e.printStackTrace();
         }
     }
 
