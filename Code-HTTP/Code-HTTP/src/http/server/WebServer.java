@@ -162,6 +162,14 @@ public class WebServer {
 
           //uri contains "?"
           if(!uri.contains("?")){
+              //uri contains "/"
+              if (uri.equals("/")) {
+                  requestHandler(out,200,"text/html");
+                  out.println("<link rel=\"icon\" href=\"data:;base64,=\">");
+                  out.println("<H1>Welcome to our WebServer</H1>");
+                  out.flush();
+
+              }
 
           }//GET with parameters
           else if(uri.contains("Adder.html?") && !uri.endsWith("?") && file.exists() && file.isFile()){
