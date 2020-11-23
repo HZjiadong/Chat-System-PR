@@ -32,8 +32,8 @@ public class WebServlet extends HttpServlet {
         //Use "request" to read incoming HTTP header and HTML from data
         //data that user entered and submitted
         String accountIdStr = req.getParameter("accoundIdStr");
-        int accoundId = Integer.parseInt(accountIdStr);
-        if (accoundId != 0){
+        int accountId = Integer.parseInt(accountIdStr);
+        if (accountId != 0){
             out.println("Id can't be zero!");
         }
 
@@ -61,7 +61,7 @@ public class WebServlet extends HttpServlet {
         }
         ResultSet rs = null;
         try {
-            rs = stmt.executeQuery("Select balance FROM accounts WHERE id=" + accoundId);
+            rs = stmt.executeQuery("Select balance FROM accounts WHERE id=" + accountId);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -73,6 +73,16 @@ public class WebServlet extends HttpServlet {
         } catch (Exception e){
             e.printStackTrace();
         }
+
+        res.setContentType("text/html");
+        
+        out.println("<HTML>");
+        out.println("<HEAD> <TITLE> Account " + accountId + "</TITLE></HEAD>");
+        out.println("<BODY>");
+        out.println("Current balance is " + balance);
+        out.println("</BODY>");
+        out.println("</HTML>");
+        out.close();
     }
 
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
