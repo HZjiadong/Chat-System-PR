@@ -104,34 +104,7 @@ public class WebServer {
           }
         }
 
-
-        switch(command) {
-          case "GET":
-            get(remote, out, uri);
-            break;
-          case "HEAD":
-
-
-//          case "HEAD":
-//            head(out, uri);
-//            break;
-//          case "PUT":
-//            put(remote, out, uri, byteData);
-//            break;
-//          case "POST":
-//            post(out, uri, map, byteData);
-//            break;
-//          case "DELETE":
-//            delete(out,uri);
-//            break;
-          default:
-            try {
-              requestHandler(out,501);
-            } catch (Exception e) {
-              System.out.println(e);
-            }
-        }
-
+        
 
         // Send the response
         // Send the headers
